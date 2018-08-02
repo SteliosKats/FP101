@@ -1,5 +1,22 @@
 package learnfp.meap
 
+sealed trait List[+A]
+
+case object Nil extends List[Nothing]
+case class Cons[+A](head :A, tail:List[A]) extends List[A]
+
+
+
+object List {
+  def tail[A](list :List[A]):List[A] = list match {
+    case Cons(h,t) => t
+    case Nil  => Nil
+  }
+
+  def apply[A](as: A*): List[A] =
+    if (as.isEmpty) Nil
+    else Cons(as.head, apply(as.tail: _*))
+}
 object Fibonnacci {
 
   def fib (n :Int):Int ={
@@ -56,16 +73,20 @@ object Run extends App {
   println(compose(f, g)(0) == compose(g, f)(0))
 
   def isSorted[A](a :List[A],f:(A,A)=> Boolean): Boolean ={
-    @annotation.tailrec
+   // @annotation.tailrec
     def run(n:Int): Boolean ={
-      if(n >= (a.length -1)) true
-      else if (f(a(n), a(n + 1))) true
-      else run(n+1)
+      //if(n >= (a.length -1)) true
+      //else if (f(a(n), a(n + 1))) true
+      //else run(n+1)
+      true
     }
     run(0)
   }
 
   if(isSorted[Int](List(2,3,5,7), (x,y) => x < y)) println("Hooooray")
+
+  val x:List[Int] = List.tail(List(1,2,3,4))
+  println(x)
 
 }
 
