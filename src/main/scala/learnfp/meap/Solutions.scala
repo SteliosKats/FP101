@@ -67,6 +67,7 @@ object Run extends App {
   def compose[A, B, C](f: B => C, g: A => B): A => C =
     a => f(g(a))
 
+  //implicit val iter =0;
   def f(b: Int): Int = b / 2
   def g(a: Int): Int = a + 2
 
@@ -88,6 +89,22 @@ object Run extends App {
   val x:List[Int] = List.tail(List(1,2,3,4))
   println(x)
 
+
+  def tail[A](lst: List[A]):List[A] =
+    lst match {
+      case Nil => sys.error("tail of empty list")
+      case Cons(h, Nil) => Nil
+      case Cons(h,t) => t
+    }
+
+  def drop[A](elem:Int, lst: List[A]): List[A] = {
+    @annotation.tailrec
+    def run[A](k: Int, lst: List[A]): List[A] = {
+      if (elem >= k) run(k-1,tail(lst))
+      else lst
+    }
+    run(0,lst)
+  }
 }
 
 
